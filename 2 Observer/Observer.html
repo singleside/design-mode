@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Observer</title>
+</head>
+
+<body>
+	观察者:
+	<select name="" id="">
+		<option value="man">男性</option>
+		<option value="woman">女性</option>
+	</select>
+	<hr>
+	<div id="action" style="border:1px solid;height:200px;width:200px;">
+		不同性别观察的不同动作
+	</div>
+</body>
+<script>
+	// 获取观察者对象
+	var obs = document.getElementsByTagName("select")[0];
+
+	// 定义观察者存储容器
+	var observers ={
+
+	};
+
+	// attach将观察者绑定到存储容器中
+	obs.attach = function(key,value){
+		observers[key] = value;
+	}
+	// detach卸掉一个观察者
+	obs.detach = function(key){
+		delete observers[key];
+	}
+
+	// notify通知观察者进行动作
+	// onchange 发生变化时进行notify
+	obs.onchange = obs.notify = function(){
+		for(var key in observers){
+			observers[key].update(this);
+		}
+	}
+
+	// 获取被观察对象
+	var content = document.getElementById("action");
+
+	content.update = function(observer){
+		if(observer.value=="man"){
+			this.style.backgroundColor = "blue";
+			this.innerHTML = "玩儿枪";
+		}else{
+			this.style.backgroundColor = "pink";
+			this.innerHTML = "洋娃娃";
+		}
+	}
+
+
+	// 绑定观察者
+
+	obs.attach("content",content);
+
+</script>
+</html>
